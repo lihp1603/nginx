@@ -361,7 +361,10 @@ ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)
         ch.pid = ngx_processes[ngx_process_slot].pid;
         ch.slot = ngx_process_slot;
         ch.fd = ngx_processes[ngx_process_slot].channel[0];
-
+		
+		//通过sendmsg的方法将刚刚创建的chanl传递给之前创建的子进程，这样方便进程直接能够通信
+		//为父子进程，子进程和子进程直接提供了通信方法
+		//进程间传递文件描述符
         ngx_pass_open_channel(cycle, &ch);
     }
 }
